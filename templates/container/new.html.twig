@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid d-flex vh-100">
+
+        <div class="col col-lg-6 d-flex align-items-center">
+            <div class="d-flex flex-column gap-5 mx-2 mx-md-5 w-100">
+                <h1>Create a new container</h1>
+
+                {{ form_start(form) }}
+                <div class="d-flex flex-column gap-3">
+
+                    <div class="d-flex flex-column">
+                        {{ form_label(form.name) }}
+                        {{ form_widget(form.name) }}
+                        {{ form_errors(form.name) }}
+                    </div>
+
+                    <button class="btn btn-primary align-self-start">Create</button>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+
+        <div class="d-none d-lg-block col-6 bg-primary"></div>
+    </div>
+{% endblock %}
