@@ -23,3 +23,8 @@
 /public/assets/
 /assets/vendor/
 ###< symfony/asset-mapper ###
+
+###> docker mysql volume ###
+/docker/mysql_volume
+/docker/docker/mysql_volume
+

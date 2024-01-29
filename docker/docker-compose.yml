@@ -1,0 +1,41 @@
+version: "3.4"
+
+name: app
+
+services:
+  php:
+    image: app_php
+    container_name: app_php
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+      target: php
+    volumes:
+      - ../:/var/www/app
+
+  caddy:
+    image: app_caddy
+    container_name: app_caddy
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+      target: caddy
+    ports:
+      - 80:80
+    volumes:
+      - ../:/var/www/app
+
+  mysql:
+    image: mysql:8.1
+    container_name: app_mysql
+    build: 
+      context: ../
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: app
+      MYSQL_USER: app
+      MYSQL_PASSWORD: app
+    volumes:
+      - ./docker/mysql_volume/:/var/lib/mysql
