@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Container;
 use App\Entity\UploadedFile;
+use App\service\TemporaryFileManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -27,7 +29,8 @@ class FileController extends AbstractController
             return $this->json(['message' => 'No file uploaded'], 400);
         }
 
-        $container = $this->em->getRepository(Container::class)->findOneBy(['token' => $request->request->get('token')]);
+        $container = $this->em->getRepository(Container::class)->findOneBy(['token' => $request->headers->get('Token')]);
+
         if (!$container) {
             return $this->json(['message' => 'Container not found'], 404);
         }
@@ -48,4 +51,28 @@ class FileController extends AbstractController
         ]);
     }
 
+    #[Route('/api/file/{name}', name: 'file_get', methods: ['GET'])]
+    public function get(Request $request, string $name, TemporaryFileManager $temporaryFileManager): JsonResponse
+    {
+        $container = $this->em->getRepository(Container::class)->findOneBy(['token' => $request->headers->get('Token')]);
+
+        if (!$container) {
+            return $this->json(['message' => 'Container not found'], 404);
+        }
+
+        $uploadedFile = $this->em->getRepository(UploadedFile::class)->findOneBy(['container' => $container, 'fileName' => $name]);
+
+        if (!$uploadedFile) {
+            return $this->json(['message' => 'File not found'], 404);
+        }
+
+        $file = new File($this->getParameter('kernel.project_dir') . '/data/uploads/' . $uploadedFile->getFileName());
+        $url = $temporaryFileManager->generateTemporaryFile($file);
+
+        return $this->json([
+            'name' => $uploadedFile->getFileName(),
+            'size' => $uploadedFile->getFileSize(),
+            'url' => $url,
+        ]);
+    }
 }
