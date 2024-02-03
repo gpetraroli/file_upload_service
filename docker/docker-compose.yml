@@ -15,20 +15,10 @@ services:
     volumes:
       - ../:/var/www/app
 
-  php:
-    image: ${PROJECT_NAME}_php
-    container_name: ${PROJECT_NAME}_php
-    build:
-      context: ../
-      dockerfile: docker/Dockerfile
-      target: php
-    volumes:
-      - ../:/var/www/app
-
   mysql:
     image: mysql:8.1
     container_name: ${PROJECT_NAME}_mysql
-    build: 
+    build:
       context: ../
     ports:
       - ${MYSQL_PORT}:3306
@@ -39,3 +29,15 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - ./mysql_volume/:/var/lib/mysql
+
+  php:
+    image: ${PROJECT_NAME}_php
+    container_name: ${PROJECT_NAME}_php
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+      target: php
+    depends_on:
+      - mysql
+    volumes:
+      - ../:/var/www/app

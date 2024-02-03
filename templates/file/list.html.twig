@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container my-5 d-flex flex-column gap-5">
+
+        <a href="{{ path('app_container_list') }}">< containers</a>
+
+        <h1>{{ container.name }} > Files</h1>
+
+        <div class="accordion" id="container_accordion">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">id</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Size</th>
+                    <th scope="col">CreatedAt</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    {% for file in uploadedFiles %}
+                    <th>{{ file.id }}</th>
+                    <td>{{ file.fileName }}</td>
+                    <td>{{ file.fileSize }}</td>
+                    <td>{{ file.createdAt|date('Y-m-d H:m:s') }}</td>
+                </tr>
+                {% else %}
+                </tbody>
+            </table>
+            <p class="text-secondary">The container is empty</p>
+            {% endfor %}
+        </div>
+
+    </div>
+{% endblock %}

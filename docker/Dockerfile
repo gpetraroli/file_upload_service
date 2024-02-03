@@ -20,6 +20,9 @@ RUN install-php-extensions \
 # install composer
 COPY --from=composer_upstream --link /composer /usr/bin/composer
 
+# (optional) install nano
+RUN apk add nano
+
 # install nodejs
 RUN apk add --no-cache nodejs npm
 
@@ -29,12 +32,18 @@ COPY . /var/www/app/
 # install project dependencies
 RUN cd /var/www/app/ && \
     composer install && \
-    npm init -y && \
-    npm install --force
+#    if using npm
+#    npm init -y && \
+#    npm install --force \
+#    if using importmap
+    php bin/console importmap:install
+
 
 WORKDIR /var/www/app
 
 EXPOSE 9000
+
+ENTRYPOINT ["sh", "./docker/entrypoint.sh"]
 
 # =====================================================================
 # CADDY IMAGE =========================================================

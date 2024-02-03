@@ -27,7 +27,7 @@ class Container
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\OneToMany(mappedBy: 'app', targetEntity: UploadedFile::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'container', targetEntity: UploadedFile::class, orphanRemoval: true)]
     private Collection $uploadedFiles;
 
     #[ORM\Column(length: 255)]

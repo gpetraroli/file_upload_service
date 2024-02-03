@@ -34,4 +34,10 @@ return [
         'version' => '5.3.2',
         'type' => 'css',
     ],
+    'jquery' => [
+        'version' => '3.7.1',
+    ],
+    'bootstrap' => [
+        'version' => '5.3.2',
+    ],
 ];

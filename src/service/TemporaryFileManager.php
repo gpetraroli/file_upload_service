@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\File\File;
 class TemporaryFileManager
 {
     public function __construct(
-        private Filesystem $filesystem,
+        private Filesystem            $filesystem,
         private ContainerBagInterface $params,
     )
     {
