@@ -43,7 +43,7 @@ WORKDIR /var/www/app
 
 EXPOSE 9000
 
-ENTRYPOINT ["sh", "./docker/entrypoint.sh"]
+CMD ["./docker/entrypoint.sh"]
 
 # =====================================================================
 # CADDY IMAGE =========================================================
