@@ -23,8 +23,8 @@ COPY --from=composer_upstream --link /composer /usr/bin/composer
 # (optional) install nano
 RUN apk add nano
 
-# install nodejs
-RUN apk add --no-cache nodejs npm
+# install nodejs if needed
+# RUN apk add --no-cache nodejs npm
 
 # copy project
 COPY . /var/www/app/
@@ -38,12 +38,21 @@ RUN cd /var/www/app/ && \
 #    if using importmap
     php bin/console importmap:install
 
-
 WORKDIR /var/www/app
+
+CMD ["./docker/entrypoint.sh"]
+
+# PHP DEV
+FROM php AS php_dev
 
 EXPOSE 9000
 
-CMD ["./docker/entrypoint.sh"]
+# PHP PROD
+
+FROM php AS php_prod
+
+
+
 
 # =====================================================================
 # CADDY IMAGE =========================================================
