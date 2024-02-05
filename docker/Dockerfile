@@ -3,9 +3,9 @@ FROM composer/composer:2-bin AS composer_upstream
 FROM caddy:2.7.6-alpine AS caddy_upstream
 
 # =====================================================================
-# PHP IMAGE ========================================================
+# PHP BASE IMAGE ======================================================
 
-FROM php_upstream AS php
+FROM php_upstream AS php_base
 
 # Install php extensions using docker-php-extension-installer from github.com/mlocati
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
@@ -23,36 +23,41 @@ COPY --from=composer_upstream --link /composer /usr/bin/composer
 # (optional) install nano
 RUN apk add nano
 
-# install nodejs if needed
-# RUN apk add --no-cache nodejs npm
-
 # copy project
 COPY . /var/www/app/
 
+# install nodejs if needed
+# RUN apk add --no-cache nodejs npm
+
+# TODO why composer install is not working here?
+# is it because i have copied the project beforerunning composer and the caddy image doesn't recive artifix?
+
 # install project dependencies
-RUN cd /var/www/app/ && \
-    composer install && \
+#RUN cd /var/www/app/ && \
+#    composer install && \
 #    if using npm
 #    npm init -y && \
 #    npm install --force \
 #    if using importmap
-    php bin/console importmap:install
+#    php bin/console importmap:install
 
 WORKDIR /var/www/app
 
-CMD ["./docker/entrypoint.sh"]
-
-# PHP DEV
-FROM php AS php_dev
-
 EXPOSE 9000
 
-# PHP PROD
+# =====================================================================
+# PHP DEV IMAGE =======================================================
 
-FROM php AS php_prod
+FROM php_base AS php_dev
 
+RUN chmod +x /var/www/app/docker/entrypoint.sh
 
+ENTRYPOINT ["/var/www/app/docker/entrypoint.sh"]
 
+# =====================================================================
+# PHP PROD IMAGE ======================================================
+
+FROM php_base AS php_prod
 
 # =====================================================================
 # CADDY IMAGE =========================================================
@@ -62,7 +67,7 @@ FROM caddy_upstream as caddy
 # copy caddy config
 COPY ./docker/Caddyfile /etc/caddy/Caddyfile
 
-# copy project
-COPY . /var/www/app
+# copy project from php_base
+COPY --from=php_base /var/www/app /var/www/app
 
 EXPOSE 80 443
