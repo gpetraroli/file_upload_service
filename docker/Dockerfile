@@ -29,18 +29,6 @@ COPY . /var/www/app/
 # install nodejs if needed
 # RUN apk add --no-cache nodejs npm
 
-# TODO why composer install is not working here?
-# is it because i have copied the project beforerunning composer and the caddy image doesn't recive artifix?
-
-# install project dependencies
-#RUN cd /var/www/app/ && \
-#    composer install && \
-#    if using npm
-#    npm init -y && \
-#    npm install --force \
-#    if using importmap
-#    php bin/console importmap:install
-
 WORKDIR /var/www/app
 
 EXPOSE 9000
@@ -50,9 +38,9 @@ EXPOSE 9000
 
 FROM php_base AS php_dev
 
-RUN chmod +x /var/www/app/docker/entrypoint.sh
+RUN chmod +x /var/www/app/docker/entrypoint.dev.sh
 
-ENTRYPOINT ["/var/www/app/docker/entrypoint.sh"]
+ENTRYPOINT ["/var/www/app/docker/entrypoint.dev.sh"]
 
 # =====================================================================
 # PHP PROD IMAGE ======================================================
@@ -68,6 +56,6 @@ FROM caddy_upstream as caddy
 COPY ./docker/Caddyfile /etc/caddy/Caddyfile
 
 # copy project from php_base
-COPY --from=php_base /var/www/app /var/www/app
+COPY . /var/www/app/
 
 EXPOSE 80 443
