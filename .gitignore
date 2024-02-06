@@ -26,5 +26,5 @@
 
 docker/mysql_volume
 
-.idea/
+/.idea/
 
