@@ -1,6 +1,6 @@
 #!/bin/sh
 
-composer install
+composer install --prefer-dist --no-progress --no-interaction
 php ./bin/console importmap:install
 
 # if needs to build sass
@@ -8,5 +8,11 @@ php ./bin/console importmap:install
 
 php ./bin/console d:m:m --no-interaction
 php ./bin/console cache:clear
+
+mkdir -p "./data"
+mkdir -p "./var"
+
+chown -R www-data:www-data ./data
+chown -R www-data:www-data ./var
 
 php-fpm
