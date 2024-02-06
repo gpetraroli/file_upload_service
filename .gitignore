@@ -27,5 +27,6 @@
 docker/mysql_volume
 
 .idea/
-./data/*
+/data/
+/public/tmp/
 
