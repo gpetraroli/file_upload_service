@@ -29,6 +29,8 @@ COPY --link . /var/www/app/
 # install nodejs if needed
 # RUN apk add --no-cache nodejs npm
 
+RUN chmod -R 777 /var/www/app/data/
+
 WORKDIR /var/www/app
 
 EXPOSE 9000
