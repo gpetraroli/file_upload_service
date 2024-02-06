@@ -24,7 +24,7 @@ COPY --from=composer_upstream --link /composer /usr/bin/composer
 RUN apk add nano
 
 # copy project
-COPY . /var/www/app/
+COPY --link . /var/www/app/
 
 # install nodejs if needed
 # RUN apk add --no-cache nodejs npm
