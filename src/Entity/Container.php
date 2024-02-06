@@ -12,6 +12,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[UniqueEntity(fields: ['name'], message: 'There is already an app with this name')]
 class Container
 {
+    CONST TYPE_PUBLIC = 'public';
+    CONST TYPE_PRIVATE = 'private';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -32,6 +35,9 @@ class Container
 
     #[ORM\Column(length: 255)]
     private ?string $token = null;
+
+    #[ORM\Column(length: 50)]
+    private ?string $type = self::TYPE_PRIVATE;
 
     public function __construct()
     {
@@ -118,6 +124,18 @@ class Container
     public function setToken(string $token): static
     {
         $this->token = $token;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): static
+    {
+        $this->type = $type;
 
         return $this;
     }

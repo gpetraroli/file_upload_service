@@ -20,6 +20,7 @@
                          data-bs-parent="#container_accordion">
                         <div class="accordion-body">
                             <p>Secret token: <span class="fw-bold">{{ container.token }}</span></p>
+                            <p>Type: <span class="fw-bold">{{ container.type }}</span></p>
                             <div class="mb-3">
                                 <a href="{{ path('app_file_list', {'id': container.id}) }}">Files ({{ container.uploadedFiles|length }})</a>
                                 <span class="text-secondary">|</span>

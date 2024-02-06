@@ -17,6 +17,12 @@
                         {{ form_errors(form.name) }}
                     </div>
 
+                    <div class="d-flex flex-column">
+                        {{ form_label(form.type) }}
+                        {{ form_widget(form.type) }}
+                        {{ form_errors(form.type) }}
+                    </div>
+
                     <button class="btn btn-primary align-self-start">Create</button>
                 </div>
                 {{ form_end(form) }}

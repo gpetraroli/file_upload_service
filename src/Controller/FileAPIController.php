@@ -67,12 +67,21 @@ class FileAPIController extends AbstractController
         }
 
         $file = new File($this->getParameter('kernel.project_dir') . '/data/uploads/' . $uploadedFile->getFileName());
-        $url = $temporaryFileManager->generateTemporaryFile($file);
+
+        if ($container->getType() === Container::TYPE_PUBLIC) {
+            $url = $temporaryFileManager->generateTemporaryFile($file);
+
+            return $this->json([
+                'name' => $uploadedFile->getFileName(),
+                'size' => $uploadedFile->getFileSize(),
+                'url' => $url,
+            ]);
+        }
 
         return $this->json([
             'name' => $uploadedFile->getFileName(),
             'size' => $uploadedFile->getFileSize(),
-            'url' => $url,
+            'base64' => base64_encode(file_get_contents($file->getPathname())),
         ]);
     }
 }
