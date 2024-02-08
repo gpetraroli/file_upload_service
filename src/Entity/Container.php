@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\AppRepository;
+use App\Repository\ContainerRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-#[ORM\Entity(repositoryClass: AppRepository::class)]
+#[ORM\Entity(repositoryClass: ContainerRepository::class)]
 #[UniqueEntity(fields: ['name'], message: 'There is already an app with this name')]
 class Container
 {
