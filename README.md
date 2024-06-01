@@ -55,7 +55,7 @@ docker-compose up
 ```
 With this command docker will automatically merge the `docker-compose.yaml` and the `docker-compose.override.yaml` files.
 
-> **Note:** Don't forget to copy the `.env` file to `.env.local` and change the Mercure variables if you want to use Mercure in the dev environment.
+> **Note:** Don't forget to copy the `.env` file to `.env.local` and change the Mercure variables if you want to use Mercure in the dev environment.<br>
 > MERCURE_URL=http://file_upload_service_mercure/.well-known/mercure<br>
 > MERCURE_PUBLIC_URL=http://localhost:7000/.well-known/mercure<br>
 > MERCURE_JWT_SECRET="!ChangeThisMercureHubJWTSecretKey!"
