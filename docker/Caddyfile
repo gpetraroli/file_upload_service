@@ -1,0 +1,12 @@
+:80 {
+    root * /var/www/app/public
+
+    # serve files directly if they can be found (e.g. CSS or JS files in public/)
+    encode zstd gzip
+    file_server
+
+    # Handle PHP requests using FastCGI
+    php_fastcgi php:9000 {
+        resolve_root_symlink
+    }
+}

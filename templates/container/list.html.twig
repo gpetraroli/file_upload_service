@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div {{ turbo_stream_listen('App\\Entity\\UploadedFile') }}></div>
+
+    <div class="container my-5 d-flex flex-column gap-5">
+
+        <h1>Your containers</h1>
+
+        <a href="{{ path('app_container_new') }}">New container</a>
+
+        <div class="accordion" id="container_accordion">
+            {% for container in containers %}
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading{{ loop.index }}">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapse{{ loop.index }}" aria-expanded="false" aria-controls="collapse{{ loop.index }}">
+                            {{ container.name }}
+                        </button>
+                    </h2>
+                    <div id="collapse{{ loop.index }}" class="accordion-collapse collapse" aria-labelledby="heading{{ loop.index }}"
+                         data-bs-parent="#container_accordion">
+                        <div class="accordion-body">
+                            <p>Secret token: <span class="fw-bold text-break">{{ container.token }}</span></p>
+                            <p>Type: <span class="fw-bold">{{ container.type }}</span></p>
+                            <div class="mb-3">
+                                <a id="file-count-{{ container.id }}" href="{{ path('app_file_list', {'id': container.id}) }}">Files ({{ container.uploadedFiles|length }})</a>
+                                <span class="text-secondary">|</span>
+                                <a href="{{ path('app_container_refresh-token', {'id': container.id}) }}" class="text-danger">Refresh token</a>
+                                <span class="text-secondary">|</span>
+                                <a href="{{ path('app_container_delete', {'id': container.id}) }}" class="text-danger">Delete container</a>
+                            </div>
+                            <p class="text-secondary">Created: {{ container.createdAt|date('Y-m-d H:m') }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                    <p class="text-secondary">No containers yet</p>
+            {% endfor %}
+        </div>
+
+    </div>
+{% endblock %}
