@@ -1,0 +1,29 @@
+* {
+    font-family: 'JetBrains Mono', monospace;;
+}
+
+// INPUTS
+input[type="text"], input[type="password"], select {
+    border: none;
+    border-radius: 4px;
+    padding: 10px;
+    background-color: #eee;
+}
+
+// create a flash animation
+@keyframes flash {
+    0% {
+        background-color: #fff;
+    }
+    10%, 90% {
+        background-color: #fff9db;
+    }
+    100% {
+        background-color: #fff;
+    }
+}
+
+// apply the flash animation to the .flash class
+.flash, .flash td, .flash th {
+    animation: flash 5s ease-out;
+}

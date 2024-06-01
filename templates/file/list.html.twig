@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div {{ turbo_stream_listen('App\\Entity\\UploadedFile') }}></div>
+
+    <div class="container my-5 d-flex flex-column gap-5">
+
+        <a class="align-self-start" href="{{ path('app_container_list') }}">< containers</a>
+
+        <h1>{{ container.name }} > Files</h1>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">Name</th>
+                <th scope="col">Size</th>
+                <th scope="col">CreatedAt</th>
+            </tr>
+            </thead>
+            <tbody id="file-list-{{ container.id }}">
+            {% for file in uploadedFiles %}
+                {% include 'file/_file_row.html.twig' %}
+            {% endfor %}
+            </tbody>
+        </table>
+        {% if uploadedFiles|length == 0 %}
+            <p class="text-secondary">The container is empty</p>
+        {% endif %}
+    </div>
+{% endblock %}
+

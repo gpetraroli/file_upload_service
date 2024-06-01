@@ -1,0 +1,6 @@
+<tr class="{{ is_new|default(false) ? 'flash' }}">
+    <th>{{ file.id }}</th>
+    <td>{{ file.fileName }}</td>
+    <td>{{ file.fileSize }}</td>
+    <td>{{ file.createdAt|date('Y-m-d H:m:s') }}</td>
+</tr>

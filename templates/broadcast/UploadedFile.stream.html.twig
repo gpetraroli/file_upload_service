@@ -1,0 +1,28 @@
+{% block create %}
+    <turbo-stream action="prepend" target="file-list-{{ entity.container.id }}">
+        <template>
+            {% include 'file/_file_row.html.twig' with {
+                'file': entity,
+                'is_new': true
+            } %}
+        </template>
+    </turbo-stream>
+
+    <turbo-stream action="replace" target="file-count-{{ entity.container.id }}">
+        <template>
+            <a
+                id="file-count-{{ entity.container.id }}"
+                href="{{ path('app_file_list', {'id': entity.container.id}) }}"
+                class="flash"
+            >
+                Files ({{ entity.container.uploadedFiles|length }})
+            </a>
+        </template>
+    </turbo-stream>
+{% endblock %}
+
+{% block update %}
+{% endblock %}
+
+{% block remove %}
+{% endblock %}
