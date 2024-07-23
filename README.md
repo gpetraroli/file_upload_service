@@ -3,7 +3,6 @@ This is a simple dummy project to demonstrate how to dockerize a Symfony applica
 
 ## Requirements
 - Docker
-- Docker Compose
 
 ## Introduction
 This project is a simple file upload service.
@@ -37,23 +36,23 @@ The Caddy server should be behind a reverse proxy, this means that the Caddy ser
 ![Docker diagram](./wiki/reverse_proxy.png)
 *This diagram shows the communication flows between containers in a dev and prod environments.*
 
-To achieve this, the `docker-compose.yaml` is overridden by the `docker-compose.override.yaml` file for the dev environment.<br>
-For the prod environment, the `docker-compose.yaml` is overridden by the `docker-compose.override.prod.yaml` file.<br>
-The difference between the two overrides is simple: instead of mapping any port in the `docker-compose.yaml` file, it is done in the `docker-compose.override.yaml` file for the dev environment, and since the prod environment should not be accessible from the host machine, we do not map any port in the `docker-compose.override.prod.yaml` file.<br>
+To achieve this, the `docker compose.yaml` is overridden by the `docker compose.override.yaml` file for the dev environment.<br>
+For the prod environment, the `docker compose.yaml` is overridden by the `docker compose.override.prod.yaml` file.<br>
+The difference between the two overrides is simple: instead of mapping any port in the `docker compose.yaml` file, it is done in the `docker compose.override.yaml` file for the dev environment, and since the prod environment should not be accessible from the host machine, we do not map any port in the `docker compose.override.prod.yaml` file.<br>
 In addition, for the `prod` environment, the Caddy container must be connected to the same network (main_network) the reverse proxy container is connected to in order to be able to communicate with each other;
-the Caddy container needs to communicate with the PHP container as well and since in the `docker-compose.override.prod.yaml` file the network configuration is overridden, it must be connected to the default network explicitly.
+the Caddy container needs to communicate with the PHP container as well and since in the `docker compose.override.prod.yaml` file the network configuration is overridden, it must be connected to the default network explicitly.
 
 ## How to run the project
-The ```Dockerfile``` as well as the ```docker-compose.yaml``` and the ```docker-compose.override.yaml``` files are located in the docker directory.<br>
+The ```Dockerfile``` as well as the ```docker compose.yaml``` and the ```docker compose.override.yaml``` files are located in the docker directory.<br>
 So move to the docker directory:
 ```bash
 cd docker
 ```
 Finally, to run the project for the `dev` environment, you just need to run the following command:
 ```bash
-docker-compose up
+docker compose up
 ```
-With this command docker will automatically merge the `docker-compose.yaml` and the `docker-compose.override.yaml` files.
+With this command docker will automatically merge the `docker compose.yaml` and the `docker compose.override.yaml` files.
 
 > **Note:** Don't forget to copy the `.env` file to `.env.local` and change the Mercure variables if you want to use Mercure in the dev environment.<br>
 > MERCURE_URL=http://file_upload_service_mercure/.well-known/mercure<br>
@@ -62,9 +61,23 @@ With this command docker will automatically merge the `docker-compose.yaml` and 
 
 For the `prod` environment, you need to run the following command:
 ```bash
-docker-compose -f docker-compose.yaml -f docker-compose.override.prod.yaml up
+docker compose -f docker compose.yaml -f docker compose.override.prod.yaml up
 ```
-This will merge the `docker-compose.yaml` and the `docker-compose.override.prod.yaml` files.
+This will merge the `docker compose.yaml` and the `docker compose.override.prod.yaml` files.
+
+## Additional notes
+
+### LF vs CRLF
+If you are using Windows, you may encounter an issue with the line endings.<br>
+To fix this issue, you can run the following command:
+```bash
+git config --global core.autocrlf input
+```
+Alternatively, you can add to the `.gitattributes` file the following line:
+```
+* text text=auto eol=lf
+```
+The `.gitattributes` provided in this project contains a set of rules typically used for Symfony projects, you can use it as a template for your projects.
 
 
 
