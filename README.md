@@ -79,5 +79,9 @@ Alternatively, you can add to the `.gitattributes` file the following line:
 ```
 The `.gitattributes` provided in this project contains a set of rules typically used for Symfony projects, you can use it as a template for your projects.
 
+### Prefer Debian over Alpine for PHP
+Official PHP images are based on Debian and use the ```GNU C library (glibc)``` while Alpine uses ```musl libc``` which is not officially supported by PHP.<br>
+This can lead to issues with PHP extensions and other PHP related problems.
 
-
+### External resources
+- [Containerization Tips and Tricks for PHP apps (Article by Kévin Dunglas )](https://dunglas.dev/2024/05/containerization-tips-and-tricks-for-php-apps/)

@@ -1,4 +1,4 @@
-FROM php:8.2-fpm-alpine AS php_upstream
+FROM php:8.3-fpm AS php_upstream
 FROM composer/composer:2-bin AS composer_upstream
 FROM caddy:2.7.6-alpine AS caddy_upstream
 
@@ -20,14 +20,17 @@ RUN install-php-extensions \
 # install composer
 COPY --from=composer_upstream --link /composer /usr/bin/composer
 
+# update repositories
+RUN apt update
+
 # (optional) install nano
-RUN apk add nano
+RUN apt install nano -yq
 
 # copy project
 COPY . /var/www/app/
 
 # install nodejs if needed
-# RUN apk add --no-cache nodejs npm
+# RUN apt install --no-cache nodejs npm -yq
 
 WORKDIR /var/www/app
 
