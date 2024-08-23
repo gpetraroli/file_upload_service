@@ -16,4 +16,6 @@ mkdir -p "./data" "./var"
 
 chown -R www-data:www-data .
 
+chmod -R 775 ./var
+
 php-fpm
